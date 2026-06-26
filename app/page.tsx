@@ -1,65 +1,88 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import Button from '@/components/ui/Button';
 
-export default function Home() {
+export default async function LandingPage() {
+  const { userId } = await auth();
+
+  // If already signed in, redirect to dashboard
+  if (userId) {
+    redirect('/dashboard');
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-surface)', color: 'var(--color-ink)' }}>
+      {/* Navbar */}
+      <header className="h-16 px-6 lg:px-12 flex items-center justify-between border-b" style={{ borderColor: 'var(--color-surface-3)' }}>
+        <div className="flex items-center gap-2.5">
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold"
+            style={{ background: 'var(--color-purple)' }}
+          >
+            M
+          </div>
+          <span className="font-semibold text-lg">Threadly</span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="flex items-center gap-4">
+          <Link href="/sign-in" className="text-sm font-medium no-underline hover:opacity-80 transition-opacity" style={{ color: 'var(--color-ink-2)' }}>
+            Sign in
+          </Link>
+          <Link href="/sign-up">
+            <Button variant="primary" size="md">
+              Get Started
+            </Button>
+          </Link>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="flex-1 flex flex-col items-center justify-center px-6 text-center py-24">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-8 text-xs font-medium" style={{ background: 'var(--color-purple-light)', color: 'var(--color-purple)' }}>
+          <span className="w-2 h-2 rounded-full" style={{ background: 'var(--color-purple)' }} />
+          Gemini 1.5 Powered
+        </div>
+        
+        <h1 className="text-5xl md:text-7xl font-bold max-w-4xl tracking-tight leading-tight mb-6">
+          Turn messy meetings into <span className="font-serif italic" style={{ color: 'var(--color-purple)' }}>structured intelligence</span>
+        </h1>
+        
+        <p className="text-lg md:text-xl max-w-2xl mb-10" style={{ color: 'var(--color-ink-2)' }}>
+          Threadly uses AI to extract decisions, assign action items, and find cross-meeting patterns. Stop taking notes and start taking action.
+        </p>
+        
+        <div className="flex items-center gap-4 flex-col sm:flex-row">
+          <Link href="/sign-up">
+            <Button variant="primary" size="lg" className="w-full sm:w-auto px-8">
+              Start for free
+            </Button>
+          </Link>
+          <Link href="#features" className="text-sm font-medium hover:underline" style={{ color: 'var(--color-ink-2)' }}>
+            See how it works v
+          </Link>
+        </div>
+
+        {/* Feature Preview Image/Mockup area */}
+        <div className="mt-20 w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl relative" style={{ border: '0.5px solid var(--color-surface-3)' }}>
+            <div className="aspect-video bg-white w-full flex flex-col items-center justify-center border-b" style={{ borderColor: 'var(--color-surface-3)' }}>
+                <div className="text-center space-y-4 max-w-md px-6 py-12">
+                     <div className="w-16 h-16 mx-auto rounded-xl flex items-center justify-center mb-2" style={{ background: 'var(--color-teal-light)' }}>
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                               <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="var(--color-teal)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                               <path d="M8 12L11 15L16 9" stroke="var(--color-teal)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                     </div>
+                     <h3 className="text-xl font-bold">Instantly processed</h3>
+                     <p className="text-sm" style={{ color: 'var(--color-ink-3)' }}>Paste your transcript and let AI extract summaries, decisions, and action items in seconds.</p>
+                </div>
+            </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="py-8 text-center text-sm border-t" style={{ borderColor: 'var(--color-surface-3)', color: 'var(--color-ink-3)' }}>
+        <p>(c) {new Date().getFullYear()} Threadly. Built with Next.js, Clerk, Supabase, and Gemini.</p>
+      </footer>
     </div>
   );
 }
