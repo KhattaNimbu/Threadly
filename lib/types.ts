@@ -7,6 +7,8 @@
 export type Priority = 'high' | 'medium' | 'low';
 export type Sentiment = 'productive' | 'tense' | 'unclear' | 'routine';
 export type ExportFormat = 'notion' | 'slack' | 'email';
+export type ExportDestination = 'clipboard' | 'email';
+export type ExportStatus = 'pending' | 'sent' | 'failed';
 export type InsightType = 'recurring_topic' | 'ownership_gap' | 'meeting_health' | 'risk';
 
 // ---------------------------------------------
@@ -120,7 +122,10 @@ export interface TasksResponse {
 }
 
 export interface ExportResponse {
-  content: string;
+  success?: boolean;
+  content?: string;
+  delivered_to?: string;
+  provider?: 'resend';
 }
 
 export interface ApiError {

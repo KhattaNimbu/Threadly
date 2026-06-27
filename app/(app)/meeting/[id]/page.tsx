@@ -35,12 +35,19 @@ export default async function MeetingDetailPage({ params }: Props) {
 
   const supabase = createServerSupabase();
 
-  const { data: meeting, error } = await supabase
-    .from('meetings')
-    .select('*, action_items(*)')
-    .eq('id', id)
-    .eq('user_id', userId)
-    .single();
+  const [{ data: meeting, error }, { data: userProfile }] = await Promise.all([
+    supabase
+      .from('meetings')
+      .select('*, action_items(*)')
+      .eq('id', id)
+      .eq('user_id', userId)
+      .single(),
+    supabase
+      .from('users')
+      .select('email')
+      .eq('id', userId)
+      .maybeSingle(),
+  ]);
 
   if (error || !meeting) {
     notFound();
@@ -56,7 +63,7 @@ export default async function MeetingDetailPage({ params }: Props) {
           <MeetingSummaryCard meeting={meetingWithItems} />
         </div>
         <div className="flex-shrink-0 mt-1">
-          <ExportButton meetingId={id} />
+          <ExportButton meetingId={id} defaultRecipientEmail={userProfile?.email ?? ''} />
         </div>
       </div>
 

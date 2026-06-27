@@ -167,6 +167,26 @@ GRANT EXECUTE ON FUNCTION match_meetings_by_embedding(text, vector, int) TO serv
 -- ─────────────────────────────────────────────────────────
 -- TABLE: rate_limits
 -- ─────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS export_logs (
+  id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id           text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  meeting_id        uuid NOT NULL REFERENCES meetings(id) ON DELETE CASCADE,
+  destination_type  text NOT NULL CHECK (destination_type IN ('email')),
+  recipient         text NOT NULL,
+  status            text NOT NULL CHECK (status IN ('pending','sent','failed')) DEFAULT 'pending',
+  provider          text NOT NULL DEFAULT 'resend',
+  error_message     text,
+  created_at        timestamptz DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS export_logs_user_id_idx ON export_logs(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS export_logs_meeting_id_idx ON export_logs(meeting_id, created_at DESC);
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE export_logs TO service_role;
+
+-- ─────────────────────────────────────────────────────────
+-- TABLE: rate_limits
+-- ─────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS rate_limits (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id     text NOT NULL,
