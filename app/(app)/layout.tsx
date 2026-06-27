@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
-import { createServerSupabase } from '@/lib/supabase/server';
+import { syncAuthenticatedUser } from '@/lib/user-sync';
 
 export default async function AppLayout({
   children,
@@ -15,12 +15,7 @@ export default async function AppLayout({
     redirect('/sign-in');
   }
 
-  // Ensure user exists in Supabase on first access
-  const supabase = createServerSupabase();
-  await supabase.from('users').upsert(
-    { id: userId, email: '', name: '' },
-    { onConflict: 'id', ignoreDuplicates: true }
-  );
+  await syncAuthenticatedUser(userId);
 
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--color-surface)' }}>

@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { streamAskHistory } from '@/lib/gemini';
-import { createServerSupabase } from '@/lib/supabase/server';
 import { checkRateLimit } from '@/lib/rate-limit';
 import type { MeetingWithItems } from '@/lib/types';
+import { findRelevantMeetingsForQuestion } from '@/lib/meeting-search';
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,21 +34,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = createServerSupabase();
-
-    // Fetch last 10 meetings with their action items
-    const { data: meetings, error: meetingsError } = await supabase
-      .from('meetings')
-      .select('*, action_items(*)')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(10);
-
-    if (meetingsError) {
-      throw new Error(meetingsError.message);
-    }
-
-    const meetingsWithItems = (meetings ?? []) as MeetingWithItems[];
+    const meetingsWithItems = await findRelevantMeetingsForQuestion({
+      userId,
+      question: question.trim(),
+    }) as MeetingWithItems[];
 
     // Stream Gemini response
     const stream = await streamAskHistory(question, meetingsWithItems);
@@ -58,7 +47,7 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'text/plain; charset=utf-8',
         'Transfer-Encoding': 'chunked',
         'X-Meetings-Used': JSON.stringify(
-          meetingsWithItems.slice(0, 10).map((m) => ({ id: m.id, title: m.title }))
+          meetingsWithItems.map((m) => ({ id: m.id, title: m.title }))
         ),
       },
     });

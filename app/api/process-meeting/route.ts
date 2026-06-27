@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { analyseMeeting } from '@/lib/gemini';
 import { createServerSupabase } from '@/lib/supabase/server';
 import { checkRateLimit } from '@/lib/rate-limit';
+import { syncAuthenticatedUser } from '@/lib/user-sync';
+import { generateMeetingSearchEmbedding, toVectorLiteral } from '@/lib/meeting-search';
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,13 +45,9 @@ export async function POST(req: NextRequest) {
     const analysis = await analyseMeeting(transcript.trim());
 
     // 5. Save to Supabase
-    const supabase = createServerSupabase();
+    await syncAuthenticatedUser(userId);
 
-    // Upsert user record (Clerk user might not exist in our DB yet)
-    await supabase.from('users').upsert(
-      { id: userId, email: '', name: '' },
-      { onConflict: 'id', ignoreDuplicates: true }
-    );
+    const supabase = createServerSupabase();
 
     // Insert meeting
     const { data: meeting, error: meetingError } = await supabase
@@ -95,6 +93,25 @@ export async function POST(req: NextRequest) {
         console.error('Action items insert error:', itemsError);
         // Non-fatal: continue even if items fail
       }
+    }
+
+    try {
+      const embedding = await generateMeetingSearchEmbedding({
+        transcript: transcript.trim(),
+        analysis,
+      });
+
+      const { error: embeddingError } = await supabase
+        .from('meetings')
+        .update({ content_embedding: toVectorLiteral(embedding) })
+        .eq('id', meeting.id)
+        .eq('user_id', userId);
+
+      if (embeddingError) {
+        console.error('Meeting embedding update error:', embeddingError);
+      }
+    } catch (embeddingError) {
+      console.error('Meeting embedding generation error:', embeddingError);
     }
 
     return NextResponse.json({
