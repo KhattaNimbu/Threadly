@@ -14,7 +14,8 @@ Threadly is a Next.js 16 application that turns raw meeting transcripts into str
 ## Current status
 
 - The core product flow is built and wired together end to end.
-- A few cleanup items remain: one known lint issue on the insights page, a small number of encoding artifacts in UI copy, and no automated tests yet.
+- Recent upgrades now include automated route/parsing tests, semantic meeting retrieval for `/ask`, Clerk-to-Supabase profile syncing, and email export via Resend.
+- A few cleanup items remain: one known lint warning around the deprecated `middleware` file convention, a small number of encoding artifacts in UI copy, and manual setup steps for semantic-search/export infrastructure in Supabase and env files.
 - The project is ready for local development once the required environment variables are configured.
 
 ## Quick start
@@ -72,11 +73,16 @@ git push -u origin main
 Required variables used by the app:
 
 - `GEMINI_API_KEY`
+- `GEMINI_EMBEDDING_MODEL` (optional, defaults to `gemini-embedding-001`)
+- `GEMINI_EMBEDDING_API_VERSION` (optional, defaults to `v1`)
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
 - `CLERK_SECRET_KEY`
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_API_KEY`
+- `EXPORT_FROM_EMAIL`
+- `EXPORT_REPLY_TO_EMAIL` (optional)
 
 Security note:
 
@@ -90,16 +96,18 @@ Security note:
 3. `POST /api/process-meeting` sends the transcript to Gemini.
 4. Gemini returns structured JSON with summary, decisions, topics, participants, sentiment, and action items.
 5. The app stores the meeting and action items in Supabase.
-6. The user is redirected to `/meeting/[id]` to review the result.
-7. From there they can:
+6. The app also generates a Gemini embedding for the meeting and stores it for semantic retrieval.
+7. The user is redirected to `/meeting/[id]` to review the result.
+8. From there they can:
    - mark action items complete
-   - export the meeting summary
+   - copy a formatted export
+   - send the meeting export by email
    - review the raw transcript
-8. Other pages reuse the same stored meeting data:
+9. Other pages reuse the same stored meeting data:
    - `/dashboard` for stats and recent meetings
    - `/tasks` for cross-meeting action items
    - `/insights` for AI pattern detection
-   - `/ask` for chat over recent meetings
+   - `/ask` for chat over semantically retrieved meetings
 
 ## Route Map
 
@@ -127,7 +135,7 @@ Protected by Clerk middleware and the `(app)` layout.
 - `/meeting/[id]`
   - Meeting summary view
   - Action item list
-  - Export dropdown
+  - Export dropdown with copy and email actions
   - Raw transcript disclosure section
 - `/tasks`
   - Consolidated action-item board across meetings
@@ -153,29 +161,32 @@ What it does:
 - Authenticates the user with Clerk
 - Validates transcript input
 - Calls `analyseMeeting()` from `lib/gemini.ts`
-- Upserts a placeholder user row in Supabase
+- Syncs the authenticated Clerk user into Supabase
 - Inserts a meeting row
 - Inserts action items linked to the meeting
+- Generates and stores a semantic-search embedding for the meeting
 - Returns `{ meeting_id, analysis }`
 
 ### `POST /api/export`
 
 Purpose:
 
-- Generate a formatted export for one meeting
+- Generate a formatted export for one meeting and optionally deliver it by email
 
 What it does:
 
 - Authenticates the user
-- Validates `meeting_id` and `format`
+- Validates `meeting_id`, `format`, and `destination`
 - Loads the meeting plus action items from Supabase
 - Calls `formatMeetingExport()`
-- Returns `{ content }`
+- Returns `{ content }` for clipboard exports
+- Sends email through Resend when `destination: "email"`
+- Logs email delivery attempts in `export_logs`
 
-Current behavior:
+Supported destinations:
 
-- The frontend copies this generated content to the clipboard
-- No direct Notion/Slack/email integration yet
+- `clipboard`
+- `email`
 
 ### `GET /api/insights`
 
@@ -201,14 +212,15 @@ What it does:
 
 - Authenticates the user
 - Validates the question
-- Loads the last 10 meetings plus action items
+- Embeds the question and looks up the most relevant meetings with `match_meetings_by_embedding(...)`
+- Falls back to recent meetings if embeddings or vector lookup are unavailable
 - Calls `streamAskHistory()`
 - Streams plain text back to the client
 - Includes an `X-Meetings-Used` response header for UI context
 
 Current limitation:
 
-- This is context-window based, not vector retrieval
+- Semantic retrieval depends on the updated `supabase/schema.sql` being applied successfully
 
 ### `GET /api/tasks`
 
@@ -252,13 +264,57 @@ Implemented functions:
 - `generateInsights(meetings)`
 - `streamAskHistory(question, meetings)`
 - `formatMeetingExport(meeting, format)`
+- `embedText(text, options)`
 
 Notes:
 
 - Uses Gemini `gemini-2.5-flash` by default, with optional `GEMINI_MODEL` override
+- Uses `gemini-embedding-001` on API version `v1` by default for embeddings
 - Parses JSON responses for structured tasks
 - Strips markdown fences before `JSON.parse`
+- Validates parsed meeting-analysis and insight payload shapes before using them
 - Streams text for the ask/chat flow
+
+### `lib/meeting-search.ts`
+
+Semantic retrieval utilities.
+
+Implemented functions:
+
+- `buildMeetingSearchDocument(...)`
+- `generateMeetingSearchEmbedding(...)`
+- `findRelevantMeetingsForQuestion(...)`
+
+Notes:
+
+- Builds searchable meeting documents from title, summary, decisions, participants, action items, and transcript
+- Uses Supabase `pgvector` lookup through `match_meetings_by_embedding(...)`
+- Falls back to recent meetings if semantic search is unavailable
+
+### `lib/user-sync.ts`
+
+Authenticated-user sync helper.
+
+What it does:
+
+- Reads the active Clerk user
+- Extracts primary email and display name
+- Upserts the matching user profile into Supabase
+
+### `lib/export/`
+
+Export transport layer.
+
+Implemented modules:
+
+- `lib/export/index.ts`
+- `lib/export/email.ts`
+
+What it does:
+
+- Keeps `formatMeetingExport()` focused on content generation
+- Sends email exports through Resend
+- Builds both text and HTML email payloads
 
 ### `lib/prompts.ts`
 
@@ -329,7 +385,9 @@ Notes:
   - Individual action item presentation
 - `ExportButton.tsx`
   - Calls `/api/export`
-  - Copies formatted content to clipboard
+  - Supports clipboard export
+  - Supports send-by-email export
+  - Shows loading, success, error, and manual-copy fallback states
 
 ### Task components
 
@@ -373,6 +431,7 @@ Fields:
 - `email`
 - `name`
 - `created_at`
+- `updated_at`
 
 Purpose:
 
@@ -393,6 +452,7 @@ Fields include:
 - `sentiment`
 - `follow_up_needed`
 - `duration_estimate`
+- `content_embedding`
 - `met_at`
 - `created_at`
 
@@ -408,6 +468,20 @@ Fields include:
 - `due_date`
 - `priority`
 - `completed`
+- `created_at`
+
+### `export_logs`
+
+Fields include:
+
+- `id`
+- `user_id`
+- `meeting_id`
+- `destination_type`
+- `recipient`
+- `status`
+- `provider`
+- `error_message`
 - `created_at`
 
 ## Security Model
@@ -435,7 +509,7 @@ Built and good:
 Worth improving later:
 
 - move more reads to anon/RLS-safe server patterns where practical
-- strengthen user creation flow with real Clerk profile data instead of placeholder blank email/name
+- add richer delivery observability or export-history UI on top of `export_logs`
 
 ## Files and Folders
 
@@ -472,11 +546,16 @@ components/
   ui/
 
 lib/
+  export/
+    email.ts
+    index.ts
   gemini.ts
+  meeting-search.ts
   prompts.ts
   supabase.ts
   supabase/server.ts
   types.ts
+  user-sync.ts
 
 supabase/
   schema.sql
@@ -485,9 +564,9 @@ supabase/
 ## Known Gaps and Risks
 
 - `app/(app)/insights/page.tsx` currently fails lint because of a React effect pattern.
-- There is no test suite for API routes, prompt parsing, or UI behavior.
-- Meeting-history chat is limited to the most recent meetings and may miss older relevant context.
-- User records are upserted with blank `email` and `name` values during meeting processing.
+- Clipboard access can still be blocked by some browser contexts; the UI now falls back to a manual copy panel in that case.
+- Semantic retrieval depends on the vector schema/RPC being applied in Supabase and may fall back to recent meetings if that setup is missing or if embedding calls fail.
+- Email export depends on valid Resend credentials and a working sender address.
 - Some UI strings still contain encoding artifacts.
 
 ## Setup
@@ -518,17 +597,7 @@ npm run dev
 
 ```bash
 npm run lint
+npm test
 ```
 
-Note:
 
-- Lint currently reports an existing error in the insights page.
-
-## Suggested Next Steps
-
-- Fix the existing insights-page lint error and clean remaining warnings.
-- Clean up mojibake/encoding issues across UI strings.
-- Add automated tests for API routes and Gemini response parsing.
-- Replace "last 10 meetings" ask-history retrieval with semantic search or pgvector.
-- Replace clipboard-only export with real Notion, Slack, or email integrations.
-- Improve user profile syncing from Clerk into Supabase.
