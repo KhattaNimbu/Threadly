@@ -189,10 +189,10 @@ export default function ChatInterface() {
                   style={{
                     padding: '12px 16px',
                     borderRadius: '14px',
-                    background: msg.role === 'user' ? 'var(--color-ink)' : 'var(--color-surface)',
-                    color: msg.role === 'user' ? '#ffffff' : 'var(--color-ink)',
-                    border: msg.role === 'assistant' ? '0.5px solid var(--color-surface-3)' : 'none',
-                    fontSize: '14px',
+                    background: msg.role === 'user' ? 'var(--color-user-bg)' : 'var(--color-card-bg)',
+                    color: msg.role === 'user' ? 'var(--color-user-text)' : 'var(--color-ink)',
+                    border: '1px solid var(--color-surface-3)',
+                    fontSize: 'var(--chat-font-size)',
                     lineHeight: '1.6',
                   }}
                 >
@@ -208,8 +208,8 @@ export default function ChatInterface() {
                   {/* Meetings used context */}
                   {msg.meetings_used && msg.meetings_used.length > 0 && (
                     <p
-                      className="mt-2 text-xs"
-                      style={{ color: 'var(--color-ink-3)', borderTop: '0.5px solid var(--color-surface-2)', paddingTop: '8px' }}
+                      className="mt-2"
+                      style={{ color: 'var(--color-ink-3)', borderTop: '0.5px solid var(--color-surface-2)', paddingTop: '8px', fontSize: '13px' }}
                     >
                       Based on: {msg.meetings_used.join(', ')}
                     </p>

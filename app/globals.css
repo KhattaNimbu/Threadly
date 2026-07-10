@@ -62,6 +62,9 @@
   --font-serif: "Instrument Serif", Georgia, serif;
   --font-sans:  "Inter", system-ui, sans-serif;
 
+  /* Chat typography */
+  --chat-font-size: 15px;
+
   /* Legacy semantic aliases used across the app */
   --color-purple:        var(--color-primary);
   --color-purple-light:  var(--color-primary-muted);
@@ -76,6 +79,9 @@
   --color-ink-3:         var(--color-text-muted);
   --color-surface-2:     var(--color-surface-hover);
   --color-surface-3:     var(--color-border);
+  /* User/chat bubble tokens */
+  --color-user-bg:       var(--color-ink);
+  --color-user-text:     #ffffff;
 }
 
 /* ---- DARK MODE TOKENS ---- */
@@ -142,6 +148,9 @@
   --color-ink-3:         var(--color-text-muted);
   --color-surface-2:     var(--color-surface-hover);
   --color-surface-3:     var(--color-border);
+  /* User/chat bubble tokens in dark mode */
+  --color-user-bg:       var(--color-card-bg);
+  --color-user-text:     var(--color-ink);
 }
 
 /* ---------------------------------------------------------
