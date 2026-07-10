@@ -12,7 +12,12 @@ const pageNames: Record<string, string> = {
   '/ask': 'Ask AI',
 };
 
-export default function TopBar() {
+interface TopBarProps {
+  onToggleSidebar?: () => void;
+  isMobile?: boolean;
+}
+
+export default function TopBar({ onToggleSidebar, isMobile = false }: TopBarProps) {
   const pathname = usePathname();
 
   let pageName = 'Threadly';
@@ -31,12 +36,12 @@ export default function TopBar() {
 
   return (
     <header
+      className="topbar"
       style={{
         height: '60px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 28px',
         background: 'var(--color-topbar-bg)',
         borderBottom: '1px solid var(--color-topbar-border)',
         position: 'sticky',
@@ -46,6 +51,23 @@ export default function TopBar() {
         gap: '12px',
       }}
     >
+      {isMobile && onToggleSidebar && (
+        <button
+          type="button"
+          onClick={onToggleSidebar}
+          style={{
+            background: 'transparent',
+            border: '1px solid var(--color-border)',
+            color: 'var(--color-text-primary)',
+            padding: '8px 12px',
+            borderRadius: '10px',
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          Menu
+        </button>
+      )}
       {/* Page title */}
       <div>
         <h1 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>

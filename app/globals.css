@@ -172,6 +172,7 @@ body {
   font-family: var(--font-sans);
   line-height: 1.6;
   transition: background-color 0.2s ease, color 0.2s ease;
+  margin: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -204,11 +205,37 @@ h1, h2, h3, h4, h5, h6 {
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
+.responsive-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
 .main-content {
   margin-left: 240px;
   min-height: 100vh;
   background: var(--color-bg);
   transition: background 0.2s ease;
+  min-width: 0;
+  width: 100%;
+}
+
+.topbar {
+  padding: 0 28px;
+}
+
+.app-main {
+  flex: 1;
+  padding: 32px;
+}
+
+.page-shell {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+}
+
+.chat-interface {
+  min-height: min(72vh, 760px);
 }
 
 /* ---------------------------------------------------------
@@ -229,9 +256,129 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 16px rgba(89, 50, 234, 0.12), 0 0 1px rgba(89, 50, 234, 0.2);
 }
 
-/* ---------------------------------------------------------
-   Priority / Sentiment Badges
---------------------------------------------------------- */
+.sidebar-open {
+  display: block;
+}
+
+.sidebar-closed {
+  display: none;
+}
+
+.sidebar-close-btn {
+  display: none;
+}
+
+.mobile-overlay {
+  display: none;
+}
+
+  @media (max-width: 1024px) {
+    .responsive-shell {
+      display: block;
+    }
+
+    .sidebar {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--color-sidebar-border);
+    }
+
+    .main-content {
+      margin-left: 0;
+    }
+
+    .topbar {
+      padding: 0 20px;
+    }
+
+    .chat-interface {
+      min-height: min(68vh, 680px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .app-main {
+      padding: 20px 16px;
+    }
+
+    .topbar {
+      padding: 0 16px;
+    }
+
+    .chat-interface {
+      min-height: 60vh;
+    }
+  }
+
+  .sidebar-open {
+    display: block;
+  }
+
+  .sidebar-closed {
+    display: none;
+  }
+
+  .sidebar-close-btn {
+    display: none;
+  }
+
+  .mobile-overlay {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    .sidebar-open {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 50;
+      background: var(--color-sidebar-bg);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .sidebar-closed {
+      display: none;
+    }
+
+    .sidebar-close-btn {
+      display: block;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      font-size: 20px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 60;
+    }
+
+    .mobile-overlay {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 45;
+    }
+  }
 
 .badge-high {
   background: var(--color-danger-bg);

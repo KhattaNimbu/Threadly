@@ -62,7 +62,12 @@ const navItems: NavItem[] = [
   },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -71,7 +76,17 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+      {onClose && (
+        <button
+          type="button"
+          className="sidebar-close-btn"
+          onClick={onClose}
+          aria-label="Close menu"
+        >
+          ×
+        </button>
+      )}
       {/* Logo */}
       <div
         style={{

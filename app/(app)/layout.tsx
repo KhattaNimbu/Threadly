@@ -1,7 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import Sidebar from '@/components/layout/Sidebar';
-import TopBar from '@/components/layout/TopBar';
+import ResponsiveShell from '@/components/layout/ResponsiveShell';
 
 export default async function AppLayout({
   children,
@@ -16,15 +15,7 @@ export default async function AppLayout({
 
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--color-bg)' }}>
-      <Sidebar />
-      <div className="main-content flex-1 flex flex-col">
-        <TopBar />
-        <main style={{ flex: 1, padding: '32px' }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            {children}
-          </div>
-        </main>
-      </div>
+      <ResponsiveShell>{children}</ResponsiveShell>
     </div>
   );
 }

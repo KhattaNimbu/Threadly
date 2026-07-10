@@ -126,7 +126,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col" style={{ height: 'calc(100vh - 120px)' }}>
+    <div className="chat-interface flex flex-col">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 pb-4">
         {messages.length === 0 ? (
