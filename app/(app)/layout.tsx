@@ -2,7 +2,6 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
-import { syncAuthenticatedUser } from '@/lib/user-sync';
 
 export default async function AppLayout({
   children,
@@ -15,15 +14,13 @@ export default async function AppLayout({
     redirect('/sign-in');
   }
 
-  await syncAuthenticatedUser(userId);
-
   return (
-    <div className="flex min-h-screen" style={{ background: 'var(--color-surface)' }}>
+    <div className="flex min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <Sidebar />
       <div className="main-content flex-1 flex flex-col">
         <TopBar />
-        <main className="flex-1 p-8">
-          <div className="max-w-4xl mx-auto">
+        <main style={{ flex: 1, padding: '32px' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             {children}
           </div>
         </main>

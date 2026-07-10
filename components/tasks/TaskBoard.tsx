@@ -120,7 +120,7 @@ export default function TaskBoard({ initialTasks }: TaskBoardProps) {
                 key={task.id}
                 className="flex items-start gap-3 py-3 px-4 rounded-xl"
                 style={{
-                  background: '#ffffff',
+                  background: 'var(--color-surface)',
                   border: '0.5px solid var(--color-surface-3)',
                   borderLeft: isOverdue ? '3px solid var(--color-coral-dark)' : '0.5px solid var(--color-surface-3)',
                 }}

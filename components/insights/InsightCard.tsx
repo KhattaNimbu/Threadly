@@ -63,8 +63,8 @@ export default function InsightCard({ insight }: InsightCardProps) {
           {icon}
         </div>
         <span
-          className="text-xs font-semibold uppercase tracking-wide"
-          style={{ color: colors.color }}
+          className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+          style={{ background: colors.bg, color: colors.color }}
         >
           {labelMap[insight.type] ?? insight.type}
         </span>

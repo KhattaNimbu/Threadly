@@ -28,7 +28,7 @@ export default function Textarea({ label, error, className = '', id, ...props }:
           border: error
             ? '0.5px solid var(--color-coral-dark)'
             : '0.5px solid var(--color-surface-3)',
-          background: '#ffffff',
+          background: 'var(--color-surface)',
           color: 'var(--color-ink)',
           fontFamily: 'var(--font-sans)',
           lineHeight: '1.6',

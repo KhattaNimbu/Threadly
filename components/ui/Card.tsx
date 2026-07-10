@@ -13,26 +13,12 @@ interface CardProps {
 export default function Card({ children, className = '', style, onClick, hover = false }: CardProps) {
   return (
     <div
-      className={`card ${hover ? 'cursor-pointer' : ''} ${className}`}
+      className={`card ${hover ? 'card-hover cursor-pointer' : ''} ${className}`}
       style={{
-        transition: hover ? 'border-color 0.15s ease, background 0.15s ease' : undefined,
+        transition: 'border-color 0.15s ease, box-shadow 0.15s ease, background 0.2s ease',
         ...style,
       }}
       onClick={onClick}
-      onMouseEnter={
-        hover
-          ? (e) => {
-              e.currentTarget.style.borderColor = 'var(--color-purple)';
-            }
-          : undefined
-      }
-      onMouseLeave={
-        hover
-          ? (e) => {
-              e.currentTarget.style.borderColor = 'var(--color-surface-3)';
-            }
-          : undefined
-      }
     >
       {children}
     </div>

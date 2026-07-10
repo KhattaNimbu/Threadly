@@ -6,82 +6,225 @@ import Button from '@/components/ui/Button';
 export default async function LandingPage() {
   const { userId } = await auth();
 
-  // If already signed in, redirect to dashboard
   if (userId) {
     redirect('/dashboard');
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-surface)', color: 'var(--color-ink)' }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'var(--color-bg)',
+        color: 'var(--color-text-primary)',
+      }}
+    >
       {/* Navbar */}
-      <header className="h-16 px-6 lg:px-12 flex items-center justify-between border-b" style={{ borderColor: 'var(--color-surface-3)' }}>
-        <div className="flex items-center gap-2.5">
+      <header
+        style={{
+          height: '64px',
+          padding: '0 48px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderBottom: '1px solid var(--color-border)',
+          background: 'var(--color-surface)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold"
-            style={{ background: 'var(--color-purple)' }}
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #5932EA 0%, #8B60F5 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '14px',
+              boxShadow: '0 2px 8px rgba(89, 50, 234, 0.35)',
+            }}
           >
             M
           </div>
-          <span className="font-semibold text-lg">Threadly</span>
+          <span style={{ fontWeight: 700, fontSize: '16px', letterSpacing: '-0.01em' }}>Threadly</span>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="/sign-in" className="text-sm font-medium no-underline hover:opacity-80 transition-opacity" style={{ color: 'var(--color-ink-2)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <Link
+            href="/sign-in"
+            style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-text-secondary)', textDecoration: 'none' }}
+          >
             Sign in
           </Link>
-          <Link href="/sign-up">
-            <Button variant="primary" size="md">
-              Get Started
-            </Button>
+          <Link href="/sign-up" style={{ textDecoration: 'none' }}>
+            <Button variant="primary" size="md">Get Started</Button>
           </Link>
         </div>
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 text-center py-24">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-8 text-xs font-medium" style={{ background: 'var(--color-purple-light)', color: 'var(--color-purple)' }}>
-          <span className="w-2 h-2 rounded-full" style={{ background: 'var(--color-purple)' }} />
-          Gemini 1.5 Powered
+      <main
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '80px 24px',
+          textAlign: 'center',
+        }}
+      >
+        {/* Badge pill */}
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '6px 14px',
+            borderRadius: '100px',
+            background: 'var(--color-primary-muted)',
+            color: 'var(--color-primary)',
+            fontSize: '12px',
+            fontWeight: 600,
+            marginBottom: '32px',
+            border: '1px solid var(--color-primary-muted2)',
+          }}
+        >
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary)', display: 'inline-block' }} />
+          Powered by Gemini AI
         </div>
-        
-        <h1 className="text-5xl md:text-7xl font-bold max-w-4xl tracking-tight leading-tight mb-6">
-          Turn messy meetings into <span className="font-serif italic" style={{ color: 'var(--color-purple)' }}>structured intelligence</span>
+
+        <h1
+          style={{
+            fontSize: 'clamp(36px, 6vw, 72px)',
+            fontWeight: 700,
+            maxWidth: '880px',
+            letterSpacing: '-0.03em',
+            lineHeight: 1.1,
+            margin: '0 0 24px',
+            color: 'var(--color-text-primary)',
+          }}
+        >
+          Turn messy meetings into{' '}
+          <span
+            style={{
+              fontStyle: 'italic',
+              fontFamily: 'var(--font-serif)',
+              color: 'var(--color-primary)',
+            }}
+          >
+            structured intelligence
+          </span>
         </h1>
-        
-        <p className="text-lg md:text-xl max-w-2xl mb-10" style={{ color: 'var(--color-ink-2)' }}>
+
+        <p
+          style={{
+            fontSize: '18px',
+            maxWidth: '560px',
+            color: 'var(--color-text-secondary)',
+            margin: '0 0 40px',
+            lineHeight: 1.7,
+          }}
+        >
           Threadly uses AI to extract decisions, assign action items, and find cross-meeting patterns. Stop taking notes and start taking action.
         </p>
-        
-        <div className="flex items-center gap-4 flex-col sm:flex-row">
-          <Link href="/sign-up">
-            <Button variant="primary" size="lg" className="w-full sm:w-auto px-8">
-              Start for free
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Link href="/sign-up" style={{ textDecoration: 'none' }}>
+            <Button variant="primary" size="lg">
+              Start for free - it&apos;s free
             </Button>
           </Link>
-          <Link href="#features" className="text-sm font-medium hover:underline" style={{ color: 'var(--color-ink-2)' }}>
-            See how it works v
+          <Link
+            href="/sign-in"
+            style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-text-secondary)', textDecoration: 'none' }}
+          >
+            See how it works &darr;
           </Link>
         </div>
 
-        {/* Feature Preview Image/Mockup area */}
-        <div className="mt-20 w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl relative" style={{ border: '0.5px solid var(--color-surface-3)' }}>
-            <div className="aspect-video bg-white w-full flex flex-col items-center justify-center border-b" style={{ borderColor: 'var(--color-surface-3)' }}>
-                <div className="text-center space-y-4 max-w-md px-6 py-12">
-                     <div className="w-16 h-16 mx-auto rounded-xl flex items-center justify-center mb-2" style={{ background: 'var(--color-teal-light)' }}>
-                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                               <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="var(--color-teal)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                               <path d="M8 12L11 15L16 9" stroke="var(--color-teal)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                     </div>
-                     <h3 className="text-xl font-bold">Instantly processed</h3>
-                     <p className="text-sm" style={{ color: 'var(--color-ink-3)' }}>Paste your transcript and let AI extract summaries, decisions, and action items in seconds.</p>
-                </div>
+        {/* Feature Preview Card */}
+        <div
+          style={{
+            marginTop: '72px',
+            width: '100%',
+            maxWidth: '960px',
+            borderRadius: '20px',
+            overflow: 'hidden',
+            border: '1px solid var(--color-border)',
+            boxShadow: '0 24px 80px rgba(0, 0, 0, 0.10)',
+            background: 'var(--color-surface)',
+          }}
+        >
+          <div
+            style={{
+              padding: '20px 24px',
+              borderBottom: '1px solid var(--color-border)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FF5F57' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FEBC2E' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#28C840' }} />
+            <span style={{ marginLeft: '12px', fontSize: '13px', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+              Threadly.app/dashboard
+            </span>
+          </div>
+          <div
+            style={{
+              padding: '48px 32px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '20px',
+            }}
+          >
+            <div
+              style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '16px',
+                background: 'var(--color-success-bg)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
             </div>
+            <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-text-primary)', margin: 0 }}>
+              Instantly processed
+            </h3>
+            <p style={{ fontSize: '14px', color: 'var(--color-text-muted)', maxWidth: '400px', textAlign: 'center', margin: 0 }}>
+              Paste your transcript and let AI extract summaries, decisions, and action items in seconds.
+            </p>
+          </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="py-8 text-center text-sm border-t" style={{ borderColor: 'var(--color-surface-3)', color: 'var(--color-ink-3)' }}>
-        <p>(c) {new Date().getFullYear()} Threadly. Built with Next.js, Clerk, Supabase, and Gemini.</p>
+      <footer
+        style={{
+          padding: '28px',
+          textAlign: 'center',
+          fontSize: '13px',
+          borderTop: '1px solid var(--color-border)',
+          color: 'var(--color-text-muted)',
+        }}
+      >
+        <p style={{ margin: 0 }}>
+          &copy; {new Date().getFullYear()}{' '}Threadly. Built with Next.js, Clerk, Supabase &amp; Gemini.
+        </p>
       </footer>
     </div>
   );

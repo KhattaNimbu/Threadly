@@ -599,8 +599,3 @@ npm run dev
 npm run lint
 npm test
 ```
-
-<<<<<<< HEAD
-=======
-
->>>>>>> e64413dffba1a617a34900f8d473f7502e605230

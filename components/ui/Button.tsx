@@ -24,59 +24,58 @@ export default function Button({
     justifyContent: 'center',
     gap: '6px',
     fontFamily: 'var(--font-sans)',
-    fontWeight: 500,
-    borderRadius: '8px',
+    fontWeight: 600,
+    borderRadius: '10px',
     cursor: disabled || loading ? 'not-allowed' : 'pointer',
     transition: 'all 0.15s ease',
     border: 'none',
     outline: 'none',
-    opacity: disabled || loading ? 0.6 : 1,
+    opacity: disabled || loading ? 0.55 : 1,
     whiteSpace: 'nowrap' as const,
   };
 
   const sizeStyles: Record<string, React.CSSProperties> = {
-    sm: { padding: '6px 12px', fontSize: '12px' },
-    md: { padding: '8px 16px', fontSize: '14px' },
-    lg: { padding: '12px 24px', fontSize: '15px' },
+    sm: { padding: '6px 12px',  fontSize: '12px' },
+    md: { padding: '8px 18px',  fontSize: '14px' },
+    lg: { padding: '12px 28px', fontSize: '15px' },
   };
 
   const variantStyles: Record<string, React.CSSProperties> = {
     primary: {
-      background: 'var(--color-ink)',
+      background: 'var(--color-primary)',
       color: '#ffffff',
+      boxShadow: '0 2px 8px rgba(89, 50, 234, 0.3)',
     },
     ghost: {
-      background: 'transparent',
-      color: 'var(--color-ink)',
-      border: '0.5px solid var(--color-surface-3)',
+      background: 'var(--color-surface)',
+      color: 'var(--color-text-secondary)',
+      border: '1px solid var(--color-border)',
     },
     danger: {
-      background: 'var(--color-coral-light)',
-      color: 'var(--color-coral-dark)',
-      border: '0.5px solid #f0c4b8',
+      background: 'var(--color-danger-bg)',
+      color: 'var(--color-danger)',
+      border: '1px solid rgba(192, 57, 43, 0.2)',
     },
+  };
+
+  const hoverStyles: Record<string, Partial<React.CSSProperties>> = {
+    primary: { background: 'var(--color-primary-hover)', boxShadow: '0 4px 14px rgba(89, 50, 234, 0.4)' },
+    ghost:   { background: 'var(--color-surface-hover)', borderColor: 'var(--color-border-strong)' },
+    danger:  { background: 'var(--color-danger-bg)' },
   };
 
   return (
     <button
-      style={{
-        ...baseStyles,
-        ...sizeStyles[size],
-        ...variantStyles[variant],
-      }}
+      style={{ ...baseStyles, ...sizeStyles[size], ...variantStyles[variant] }}
       disabled={disabled || loading}
       onMouseEnter={(e) => {
         if (!disabled && !loading) {
-          if (variant === 'primary') {
-            e.currentTarget.style.background = 'var(--color-ink-2)';
-          } else if (variant === 'ghost') {
-            e.currentTarget.style.background = 'var(--color-surface-2)';
-          }
+          Object.assign(e.currentTarget.style, hoverStyles[variant]);
         }
       }}
       onMouseLeave={(e) => {
         if (!disabled && !loading) {
-          e.currentTarget.style.background = variantStyles[variant].background as string;
+          Object.assign(e.currentTarget.style, variantStyles[variant]);
         }
       }}
       className={className}

@@ -17,27 +17,20 @@ function formatDate(dateStr: string) {
 
 export default function MeetingCard({ meeting }: MeetingCardProps) {
   return (
-    <Link href={`/meeting/${meeting.id}`} className="no-underline block">
-      <Card
-        hover
-        className="flex flex-col gap-3"
-        style={{ transition: 'border-color 0.15s ease' }}
-      >
+    <Link href={`/meeting/${meeting.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+      <Card hover>
         {/* Header row */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <h3
-              className="font-semibold text-sm truncate"
-              style={{ color: 'var(--color-ink)' }}
-            >
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '10px' }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h3 style={{ fontWeight: 600, fontSize: '14px', color: 'var(--color-text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {meeting.title}
             </h3>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-3)' }}>
+            <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', margin: '3px 0 0' }}>
               {formatDate(meeting.met_at)}
-              {meeting.duration_estimate && ` - ${meeting.duration_estimate}`}
+              {meeting.duration_estimate && ` · ${meeting.duration_estimate}`}
             </p>
           </div>
-          <div className="flex-shrink-0 flex items-center gap-2">
+          <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
             {meeting.sentiment && (
               <Badge variant={meeting.sentiment}>
                 {meeting.sentiment}
@@ -48,20 +41,31 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
 
         {/* Topics */}
         {meeting.topics && meeting.topics.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
             {meeting.topics.slice(0, 4).map((topic) => (
               <Badge key={topic} variant="default">
                 {topic}
               </Badge>
             ))}
+            {meeting.topics.length > 4 && (
+              <Badge variant="purple">+{meeting.topics.length - 4} more</Badge>
+            )}
           </div>
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-1" style={{ borderTop: '0.5px solid var(--color-surface-3)' }}>
-          <div className="flex items-center gap-1.5">
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingTop: '10px',
+            borderTop: '1px solid var(--color-border)',
+          }}
+        >
+          <div>
             {meeting.participants && meeting.participants.length > 0 && (
-              <span className="text-xs" style={{ color: 'var(--color-ink-3)' }}>
+              <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
                 {meeting.participants.slice(0, 3).join(', ')}
                 {meeting.participants.length > 3 && ` +${meeting.participants.length - 3}`}
               </span>
@@ -69,8 +73,14 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
           </div>
           {typeof meeting.action_item_count !== 'undefined' && (
             <span
-              className="text-xs font-medium"
-              style={{ color: meeting.action_item_count > 0 ? 'var(--color-purple)' : 'var(--color-ink-3)' }}
+              style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                color: meeting.action_item_count > 0 ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                background: meeting.action_item_count > 0 ? 'var(--color-primary-muted)' : 'transparent',
+                padding: meeting.action_item_count > 0 ? '2px 8px' : '0',
+                borderRadius: '20px',
+              }}
             >
               {meeting.action_item_count} task{meeting.action_item_count !== 1 ? 's' : ''}
             </span>

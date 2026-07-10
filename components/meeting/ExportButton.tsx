@@ -178,7 +178,7 @@ export default function ExportButton({ meetingId, defaultRecipientEmail = '' }: 
           <div
             className="absolute right-0 top-full mt-1.5 z-20 rounded-xl py-1 min-w-[160px]"
             style={{
-              background: '#ffffff',
+              background: 'var(--color-surface)',
               border: '0.5px solid var(--color-surface-3)',
               boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
             }}
@@ -231,7 +231,7 @@ export default function ExportButton({ meetingId, defaultRecipientEmail = '' }: 
         <div
           className="absolute right-0 top-full mt-2 z-20 w-[320px] rounded-2xl p-4 space-y-3"
           style={{
-            background: '#ffffff',
+            background: 'var(--color-surface)',
             border: '0.5px solid var(--color-surface-3)',
             boxShadow: '0 12px 28px rgba(0,0,0,0.08)',
           }}
@@ -322,7 +322,7 @@ export default function ExportButton({ meetingId, defaultRecipientEmail = '' }: 
         <div
           className="absolute right-0 top-full mt-16 z-20 w-[360px] rounded-2xl p-4 space-y-3"
           style={{
-            background: '#ffffff',
+            background: 'var(--color-surface)',
             border: '0.5px solid var(--color-surface-3)',
             boxShadow: '0 12px 28px rgba(0,0,0,0.08)',
           }}

@@ -155,7 +155,7 @@ export default function ChatInterface() {
                   className="text-left px-4 py-3 rounded-xl text-sm transition-all duration-150"
                   style={{
                     border: '0.5px solid var(--color-surface-3)',
-                    background: '#ffffff',
+                    background: 'var(--color-surface)',
                     color: 'var(--color-ink-2)',
                     fontFamily: 'var(--font-sans)',
                     cursor: 'pointer',
@@ -166,7 +166,7 @@ export default function ChatInterface() {
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = 'var(--color-surface-3)';
-                    e.currentTarget.style.background = '#ffffff';
+                    e.currentTarget.style.background = 'var(--color-surface)';
                   }}
                 >
                   {q}
@@ -189,7 +189,7 @@ export default function ChatInterface() {
                   style={{
                     padding: '12px 16px',
                     borderRadius: '14px',
-                    background: msg.role === 'user' ? 'var(--color-ink)' : '#ffffff',
+                    background: msg.role === 'user' ? 'var(--color-ink)' : 'var(--color-surface)',
                     color: msg.role === 'user' ? '#ffffff' : 'var(--color-ink)',
                     border: msg.role === 'assistant' ? '0.5px solid var(--color-surface-3)' : 'none',
                     fontSize: '14px',
@@ -242,7 +242,7 @@ export default function ChatInterface() {
             padding: '10px 14px',
             borderRadius: '10px',
             border: '0.5px solid var(--color-surface-3)',
-            background: '#ffffff',
+            background: 'var(--color-surface)',
             color: 'var(--color-ink)',
             fontFamily: 'var(--font-sans)',
             maxHeight: '120px',

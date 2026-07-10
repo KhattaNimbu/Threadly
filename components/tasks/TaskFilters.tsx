@@ -33,7 +33,7 @@ export default function TaskFiltersComponent({ filters, onChange }: TaskFiltersP
     padding: '7px 10px',
     borderRadius: '8px',
     border: '0.5px solid var(--color-surface-3)',
-    background: '#ffffff',
+    background: 'var(--color-surface)',
     color: 'var(--color-ink)',
     fontSize: '13px',
     fontFamily: 'var(--font-sans)',

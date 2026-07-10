@@ -15,11 +15,11 @@ const navItems: NavItem[] = [
     href: '/dashboard',
     label: 'Dashboard',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
       </svg>
     ),
   },
@@ -27,9 +27,8 @@ const navItems: NavItem[] = [
     href: '/meeting/new',
     label: 'New Meeting',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 5v6M5 8h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 5v14M5 12h14" />
       </svg>
     ),
   },
@@ -37,9 +36,9 @@ const navItems: NavItem[] = [
     href: '/tasks',
     label: 'Tasks',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <circle cx="13" cy="12" r="2" fill="currentColor" />
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 11l3 3L22 4" />
+        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
       </svg>
     ),
   },
@@ -47,8 +46,8 @@ const navItems: NavItem[] = [
     href: '/insights',
     label: 'Insights',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M2 13l3-4 3 2 3-5 3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
       </svg>
     ),
   },
@@ -56,9 +55,8 @@ const navItems: NavItem[] = [
     href: '/ask',
     label: 'Ask AI',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M14 2H2a1 1 0 00-1 1v8a1 1 0 001 1h3l3 3 3-3h3a1 1 0 001-1V3a1 1 0 00-1-1z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path d="M5.5 7a.5.5 0 100-1 .5.5 0 000 1zM8 7a.5.5 0 100-1 .5.5 0 000 1zM10.5 7a.5.5 0 100-1 .5.5 0 000 1z" fill="currentColor" />
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
       </svg>
     ),
   },
@@ -75,66 +73,112 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       {/* Logo */}
-      <div className="px-5 py-5 border-b" style={{ borderColor: 'var(--color-surface-3)', borderWidth: '0.5px' }}>
-        <Link href="/dashboard" className="flex items-center gap-2.5 no-underline">
+      <div
+        style={{
+          padding: '20px 20px 16px',
+          borderBottom: '1px solid var(--color-sidebar-border)',
+        }}
+      >
+        <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-            style={{ background: 'var(--color-purple)' }}
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #5932EA 0%, #8B60F5 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '14px',
+              flexShrink: 0,
+              boxShadow: '0 2px 8px rgba(89, 50, 234, 0.35)',
+            }}
           >
-            M
+            T
           </div>
-          <span className="font-semibold text-sm" style={{ color: 'var(--color-ink)' }}>
+          <span style={{ fontWeight: 700, fontSize: '15px', color: 'var(--color-logo-text)', letterSpacing: '-0.01em' }}>
             Threadly
           </span>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 overflow-y-auto">
-        <ul className="space-y-0.5 list-none p-0 m-0">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 no-underline"
-                style={{
-                  color: isActive(item.href) ? 'var(--color-purple)' : 'var(--color-ink-2)',
-                  background: isActive(item.href) ? 'var(--color-purple-light)' : 'transparent',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive(item.href)) {
-                    e.currentTarget.style.background = 'var(--color-surface-2)';
-                    e.currentTarget.style.color = 'var(--color-ink)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive(item.href)) {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = 'var(--color-ink-2)';
-                  }
-                }}
-              >
-                <span className="flex-shrink-0">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            </li>
-          ))}
+      <nav style={{ flex: 1, padding: '12px 12px', overflowY: 'auto' }}>
+        <p
+          style={{
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--color-text-disabled)',
+            padding: '4px 10px 8px',
+          }}
+        >
+          Menu
+        </p>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          {navItems.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '9px 12px',
+                    borderRadius: '10px',
+                    textDecoration: 'none',
+                    fontSize: '14px',
+                    fontWeight: active ? 600 : 500,
+                    background: active ? 'var(--color-sidebar-active-bg)' : 'transparent',
+                    color: active ? 'var(--color-sidebar-active-text)' : 'var(--color-sidebar-text)',
+                    transition: 'all 0.15s ease',
+                    boxShadow: active ? '0 2px 8px rgba(89, 50, 234, 0.25)' : 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!active) {
+                      e.currentTarget.style.background = 'var(--color-sidebar-hover-bg)';
+                      e.currentTarget.style.color = 'var(--color-sidebar-text-hover)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!active) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = 'var(--color-sidebar-text)';
+                    }
+                  }}
+                >
+                  <span style={{ flexShrink: 0, opacity: active ? 1 : 0.8 }}>{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
       {/* User section */}
       <div
-        className="px-4 py-4 border-t flex items-center gap-3"
-        style={{ borderColor: 'var(--color-surface-3)', borderWidth: '0.5px' }}
+        style={{
+          padding: '12px 16px',
+          borderTop: '1px solid var(--color-sidebar-border)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+        }}
       >
         <UserButton
           appearance={{
             elements: {
-              avatarBox: 'w-7 h-7',
+              avatarBox: 'w-8 h-8',
             },
           }}
         />
-        <span className="text-xs" style={{ color: 'var(--color-ink-3)' }}>
+        <span style={{ fontSize: '13px', color: 'var(--color-text-muted)', fontWeight: 500 }}>
           Account
         </span>
       </div>

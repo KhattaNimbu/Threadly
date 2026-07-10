@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const pageNames: Record<string, string> = {
   '/dashboard': 'Dashboard',
@@ -14,7 +15,6 @@ const pageNames: Record<string, string> = {
 export default function TopBar() {
   const pathname = usePathname();
 
-  // Determine current page name
   let pageName = 'Threadly';
   if (pathname.startsWith('/meeting/') && pathname !== '/meeting/new') {
     pageName = 'Meeting Detail';
@@ -31,31 +31,65 @@ export default function TopBar() {
 
   return (
     <header
-      className="h-12 flex items-center justify-between px-6 sticky top-0 z-30 bg-white"
-      style={{ borderBottom: '0.5px solid var(--color-surface-3)' }}
+      style={{
+        height: '60px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 28px',
+        background: 'var(--color-topbar-bg)',
+        borderBottom: '1px solid var(--color-topbar-border)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 30,
+        transition: 'background 0.2s ease, border-color 0.2s ease',
+        gap: '12px',
+      }}
     >
-      <span className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
-        {pageName}
-      </span>
-      {showNewMeetingButton && (
-        <Link
-          href="/meeting/new"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-white transition-all duration-150"
-          style={{ background: 'var(--color-ink)' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'var(--color-ink-2)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'var(--color-ink)';
-          }}
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M6 4v4M4 6h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-          New Meeting
-        </Link>
-      )}
+      {/* Page title */}
+      <div>
+        <h1 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
+          {pageName}
+        </h1>
+      </div>
+
+      {/* Right side actions */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {showNewMeetingButton && (
+          <Link
+            href="/meeting/new"
+            id="topbar-new-meeting-btn"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '7px 14px',
+              borderRadius: '10px',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: '#ffffff',
+              background: 'var(--color-primary)',
+              textDecoration: 'none',
+              transition: 'background 0.15s ease, box-shadow 0.15s ease',
+              boxShadow: '0 2px 8px rgba(89, 50, 234, 0.3)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--color-primary-hover)';
+              e.currentTarget.style.boxShadow = '0 4px 14px rgba(89, 50, 234, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'var(--color-primary)';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(89, 50, 234, 0.3)';
+            }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            New Meeting
+          </Link>
+        )}
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

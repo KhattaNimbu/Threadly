@@ -28,7 +28,7 @@ export default function Input({ label, error, className = '', id, ...props }: In
           border: error
             ? '0.5px solid var(--color-coral-dark)'
             : '0.5px solid var(--color-surface-3)',
-          background: '#ffffff',
+          background: 'var(--color-surface)',
           color: 'var(--color-ink)',
           fontFamily: 'var(--font-sans)',
         }}

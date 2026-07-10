@@ -13,38 +13,47 @@ interface EmptyStateProps {
 
 export default function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center">
-      {/* Illustration */}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '80px 24px',
+        textAlign: 'center',
+      }}
+    >
       <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
-        style={{ background: 'var(--color-surface-2)' }}
+        style={{
+          width: '56px',
+          height: '56px',
+          borderRadius: '16px',
+          background: 'var(--color-primary-muted)',
+          color: 'var(--color-primary)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
       >
         {icon ?? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="18" height="18" rx="3" stroke="var(--color-ink-3)" strokeWidth="1.5" />
-            <path d="M8 12h8M8 8h5M8 16h3" stroke="var(--color-ink-3)" strokeWidth="1.5" strokeLinecap="round" />
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="3" />
+            <path d="M8 12h8M8 8h5M8 16h3" />
           </svg>
         )}
       </div>
 
-      {/* Text */}
-      <h3
-        className="text-lg font-semibold mb-2"
-        style={{ color: 'var(--color-ink)' }}
-      >
+      <h3 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--color-text-primary)', margin: '0 0 8px' }}>
         {title}
       </h3>
-      <p
-        className="text-sm max-w-xs mb-6"
-        style={{ color: 'var(--color-ink-3)' }}
-      >
+      <p style={{ fontSize: '14px', color: 'var(--color-text-muted)', maxWidth: '320px', margin: '0 0 24px', lineHeight: 1.6 }}>
         {description}
       </p>
 
-      {/* CTA */}
       {action && (
         action.href ? (
-          <a href={action.href}>
+          <a href={action.href} style={{ textDecoration: 'none' }}>
             <Button variant="primary" size="md">
               {action.label}
             </Button>

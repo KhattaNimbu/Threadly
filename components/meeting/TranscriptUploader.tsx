@@ -93,7 +93,7 @@ export default function TranscriptUploader() {
             ? '2px dashed var(--color-purple)'
             : '0.5px solid var(--color-surface-3)',
           borderRadius: '12px',
-          background: dragging ? 'var(--color-purple-light)' : '#ffffff',
+          background: dragging ? 'var(--color-purple-light)' : 'var(--color-surface)',
           transition: 'all 0.15s ease',
         }}
       >
