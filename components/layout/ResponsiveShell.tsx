@@ -20,8 +20,10 @@ export default function ResponsiveShell({ children }: { children: React.ReactNod
 
   useEffect(() => {
     if (isMobile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSidebarOpen(false);
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSidebarOpen(true);
     }
   }, [isMobile]);

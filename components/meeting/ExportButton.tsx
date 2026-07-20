@@ -111,7 +111,7 @@ export default function ExportButton({ meetingId, defaultRecipientEmail = '' }: 
 
         try {
           await copyTextToClipboard(data.content);
-        } catch (copyError) {
+        } catch (_copyError) {
           setManualCopyContent(data.content);
           setFeedback({
             type: 'error',
