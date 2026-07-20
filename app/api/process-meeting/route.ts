@@ -32,11 +32,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 3. Rate Limit (5 per hour)
-    const isAllowed = await checkRateLimit(userId, 'process-meeting', 5, '1 hour');
+    // 3. Rate Limit (20 per hour)
+    const isAllowed = await checkRateLimit(userId, 'process-meeting', 20, '1 hour');
     if (!isAllowed) {
       return NextResponse.json(
-        { error: 'Rate limit exceeded. You can only process 5 meetings per hour.' },
+        { error: 'Rate limit exceeded. You can only process 20 meetings per hour.' },
         { status: 429 }
       );
     }
