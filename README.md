@@ -268,7 +268,7 @@ Implemented functions:
 
 Notes:
 
-- Uses Gemini `gemini-2.5-flash` by default, with optional `GEMINI_MODEL` override
+- Uses Gemini `gemini-3.6-flash` by default, with optional `GEMINI_MODEL` override
 - Uses `gemini-embedding-001` on API version `v1` by default for embeddings
 - Parses JSON responses for structured tasks
 - Strips markdown fences before `JSON.parse`

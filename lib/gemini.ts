@@ -32,7 +32,7 @@ function getGeminiClient(): GoogleGenerativeAI {
 }
 
 function getGeminiModelName(): string {
-  return process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
+  return process.env.GEMINI_MODEL ?? 'gemini-3.1-flash-lite';
 }
 
 function getEmbeddingModelName(): string {
