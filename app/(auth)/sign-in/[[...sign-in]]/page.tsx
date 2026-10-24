@@ -20,7 +20,7 @@ export default function SignInPage() {
             Threadly
           </span>
         </div>
-        <SignIn />
+        <SignIn fallbackRedirectUrl="/dashboard" />
       </div>
     </div>
   );
