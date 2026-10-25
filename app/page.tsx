@@ -19,12 +19,12 @@ export default async function LandingPage() {
         background: 'var(--color-bg)',
         color: 'var(--color-text-primary)',
       }}
+      className="landing-header"
     >
       {/* Navbar */}
       <header
         style={{
           height: '64px',
-          padding: '0 48px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -55,7 +55,7 @@ export default async function LandingPage() {
           </div>
           <span style={{ fontWeight: 700, fontSize: '16px', letterSpacing: '-0.01em' }}>Threadly</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div className="landing-auth-actions">
           <Link
             href="/sign-in"
             style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-text-secondary)', textDecoration: 'none' }}
@@ -70,13 +70,13 @@ export default async function LandingPage() {
 
       {/* Hero Section */}
       <main
+        className="landing-hero"
         style={{
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '80px 24px',
           textAlign: 'center',
         }}
       >

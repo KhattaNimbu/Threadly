@@ -48,7 +48,6 @@ export default function TopBar({ onToggleSidebar, isMobile = false }: TopBarProp
         top: 0,
         zIndex: 30,
         transition: 'background 0.2s ease, border-color 0.2s ease',
-        gap: '12px',
       }}
     >
       {isMobile && onToggleSidebar && (
@@ -69,14 +68,14 @@ export default function TopBar({ onToggleSidebar, isMobile = false }: TopBarProp
         </button>
       )}
       {/* Page title */}
-      <div>
-        <h1 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
+      <div className="topbar-title">
+        <h1 style={{ fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
           {pageName}
         </h1>
       </div>
 
       {/* Right side actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="topbar-actions">
         {showNewMeetingButton && (
           <Link
             href="/meeting/new"

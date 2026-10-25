@@ -97,7 +97,7 @@ export default async function DashboardPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="dashboard-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--color-text-primary)', margin: 0 }}>
             Dashboard
@@ -132,7 +132,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+      <div className="dashboard-stats">
         <StatCard
           label="Meetings this month"
           value={meetingsThisMonth}
@@ -212,7 +212,7 @@ export default async function DashboardPage() {
             }
           />
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+          <div className="dashboard-meetings">
             {recentMeetings.map((m) => (
               <MeetingCard
                 key={m.id}
